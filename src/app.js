@@ -711,6 +711,10 @@
     renderRules();
     renderFaultTypes();
     renderAbout();
+
+    /* the self-test button must follow the language, even after a run */
+    const vbtn = $('#run-validation');
+    if (vbtn && !vbtn.disabled) vbtn.textContent = state.validation ? T('v.rerun') : T('v.run');
     if (state.validation) renderValidation(state.validation);
 
     $('#footer-meta').textContent =
@@ -904,6 +908,7 @@
     init();
   }
 })(typeof window !== 'undefined' ? window : globalThis);
+
 
 
 

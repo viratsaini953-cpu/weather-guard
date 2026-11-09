@@ -11,6 +11,8 @@ No hardware, no API key, no framework, no build step. Open `index.html` and it r
 
 ---
 
+**Live demo:** https://viratsaini953-cpu.github.io/weather-guard/
+
 ## Quick start
 
 ```bash
@@ -156,4 +158,5 @@ app/
   by statistics. Documented in [REQUIREMENTS.md](REQUIREMENTS.md) §11.
 
 Data © [Open-Meteo](https://open-meteo.com/) (CC-BY 4.0).
+
 
