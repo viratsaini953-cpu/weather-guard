@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Illustration of a clean report with a green tick">
+  <ellipse cx="160" cy="176" rx="96" ry="12" fill="#E7F2EC"/>
+
+  <!-- clipboard -->
+  <rect x="96" y="34" width="128" height="132" rx="14" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+  <rect x="136" y="24" width="48" height="20" rx="8" fill="#CFE3D6"/>
+  <g fill="#E7F2EC">
+    <rect x="114" y="76" width="92" height="8" rx="4"/>
+    <rect x="114" y="96" width="70" height="8" rx="4"/>
+    <rect x="114" y="116" width="82" height="8" rx="4"/>
+  </g>
+  <g fill="#2E7D5B">
+    <circle cx="110" cy="80" r="3.4"/>
+    <circle cx="110" cy="100" r="3.4"/>
+    <circle cx="110" cy="120" r="3.4"/>
+  </g>
+
+  <!-- check bubble -->
+  <g transform="translate(236 62)">
+    <circle cx="0" cy="0" r="26" fill="#2E7D5B"/>
+    <path d="M-10 1l6 7 15-16" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- small cloud -->
+  <g fill="#CFE3D6">
+    <ellipse cx="70" cy="60" rx="26" ry="12"/>
+    <ellipse cx="82" cy="52" rx="18" ry="12"/>
+  </g>
+</svg>

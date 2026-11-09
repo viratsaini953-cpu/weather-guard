@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220" role="img" aria-label="Illustration of a weather station with a green check mark">
+  <defs>
+    <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E7D5B" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#2E7D5B" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="150" cy="104" r="92" fill="url(#gSky)"/>
+
+  <!-- ground -->
+  <path d="M18 176c44-16 76-6 116-10 40-4 74 8 148 6v34H18z" fill="#8FBAA1" opacity="0.55"/>
+
+  <!-- mast -->
+  <rect x="146" y="72" width="8" height="104" rx="4" fill="#CFE3D6"/>
+  <rect x="148" y="72" width="3" height="104" fill="#EAF3EE"/>
+
+  <!-- anemometer -->
+  <g>
+    <circle cx="150" cy="70" r="6" fill="#EAF3EE"/>
+    <g stroke="#EAF3EE" stroke-width="3" stroke-linecap="round">
+      <path d="M150 70l-26-10"/>
+      <path d="M150 70l26-10"/>
+      <path d="M150 70v-24"/>
+    </g>
+    <g fill="#FFFFFF" opacity="0.95">
+      <circle cx="121" cy="59" r="9"/>
+      <circle cx="179" cy="59" r="9"/>
+      <circle cx="150" cy="43" r="9"/>
+    </g>
+  </g>
+
+  <!-- radiation shield -->
+  <g fill="#FFFFFF" opacity="0.95">
+    <rect x="126" y="100" width="48" height="7" rx="3.5"/>
+    <rect x="130" y="111" width="40" height="7" rx="3.5"/>
+    <rect x="134" y="122" width="32" height="7" rx="3.5"/>
+  </g>
+
+  <!-- solar panel -->
+  <g transform="rotate(-10 176 150)">
+    <rect x="160" y="136" width="44" height="26" rx="3" fill="#123F2F"/>
+    <g stroke="#3F8467" stroke-width="1.2">
+      <path d="M160 145h44M160 155h44M175 136v26M190 136v26"/>
+    </g>
+  </g>
+
+  <!-- check badge -->
+  <g transform="translate(214 132)">
+    <circle cx="0" cy="0" r="28" fill="#2E7D5B"/>
+    <path d="M-11 1l7 8 16-17" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

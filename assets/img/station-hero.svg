@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-label="Illustration of an automatic weather station in a green field">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E8F3ED"/>
+      <stop offset="0.55" stop-color="#F4FAF6"/>
+      <stop offset="1" stop-color="#FDFEFD"/>
+    </linearGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CBDFD2"/>
+      <stop offset="1" stop-color="#BCD5C6"/>
+    </linearGradient>
+    <linearGradient id="hillNear" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A9C9B6"/>
+      <stop offset="1" stop-color="#8FBAA1"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1E5B43"/>
+      <stop offset="1" stop-color="#123F2F"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#FFF3D0" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#FFF3D0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="560" fill="url(#sky)"/>
+
+  <!-- sun -->
+  <circle cx="965" cy="118" r="120" fill="url(#sunGlow)"/>
+  <circle cx="965" cy="118" r="46" fill="#FFF7DE"/>
+
+  <!-- clouds -->
+  <g fill="#FFFFFF" opacity="0.92">
+    <ellipse cx="240" cy="120" rx="78" ry="30"/>
+    <ellipse cx="300" cy="106" rx="56" ry="34"/>
+    <ellipse cx="188" cy="106" rx="46" ry="26"/>
+    <ellipse cx="700" cy="80" rx="62" ry="24"/>
+    <ellipse cx="750" cy="70" rx="44" ry="26"/>
+    <ellipse cx="655" cy="70" rx="36" ry="20"/>
+  </g>
+
+  <!-- birds -->
+  <g stroke="#9FB4A8" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M420 175c9-8 16-8 25 0"/>
+    <path d="M420 175c9 8 16 8 25 0"/>
+    <path d="M470 150c8-7 14-7 22 0"/>
+    <path d="M470 150c8 7 14 7 22 0"/>
+  </g>
+
+  <!-- far hills -->
+  <path d="M0 372c150-46 262-18 372-40 118-24 210-62 340-40 128 22 262 6 488-22v290H0z" fill="url(#hillFar)"/>
+
+  <!-- near field -->
+  <path d="M0 428c180-40 320-16 466-30 176-18 300 14 420 8 120-6 216-24 314-34v188H0z" fill="url(#hillNear)"/>
+
+  <!-- guy wires -->
+  <g stroke="#B9C7BF" stroke-width="2" opacity="0.85">
+    <path d="M884 214L770 432"/>
+    <path d="M896 214L1010 432"/>
+  </g>
+
+  <!-- mast -->
+  <rect x="882" y="152" width="14" height="286" rx="6" fill="#9DAFA5"/>
+  <rect x="884" y="152" width="4" height="286" fill="#B7C6BD"/>
+
+  <!-- anemometer -->
+  <g>
+    <circle cx="889" cy="150" r="9" fill="#6E8378"/>
+    <g stroke="#6E8378" stroke-width="4" stroke-linecap="round">
+      <path d="M889 150l-46-16"/>
+      <path d="M889 150l46-16"/>
+      <path d="M889 150v-40"/>
+    </g>
+    <g fill="#FFFFFF" stroke="#8CA096" stroke-width="3">
+      <circle cx="837" cy="132" r="15"/>
+      <circle cx="941" cy="132" r="15"/>
+      <circle cx="889" cy="105" r="15"/>
+    </g>
+  </g>
+
+  <!-- wind vane -->
+  <g transform="translate(889 196)">
+    <rect x="-3" y="-4" width="6" height="40" rx="3" fill="#6E8378"/>
+    <path d="M0 0l54 12L0 24z" fill="#2E7D5B"/>
+    <path d="M0 0l-30 12L0 24z" fill="#D8E7DE" stroke="#8CA096" stroke-width="2"/>
+  </g>
+
+  <!-- radiation shield -->
+  <g>
+    <rect x="843" y="252" width="92" height="11" rx="5" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+    <rect x="847" y="266" width="84" height="11" rx="5" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+    <rect x="851" y="280" width="76" height="11" rx="5" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+    <rect x="856" y="294" width="66" height="11" rx="5" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+    <rect x="877" y="240" width="24" height="14" rx="4" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+  </g>
+
+  <!-- rain gauge -->
+  <g>
+    <path d="M778 322h52l-8 40h-36z" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+    <rect x="770" y="314" width="68" height="10" rx="5" fill="#EAF3EE" stroke="#D4E1D9" stroke-width="2"/>
+    <path d="M790 322h28l-4 18h-20z" fill="#CFE3D6" opacity="0.85"/>
+  </g>
+
+  <!-- solar panel -->
+  <g transform="rotate(-12 806 372)">
+    <rect x="756" y="344" width="104" height="58" rx="5" fill="url(#panel)"/>
+    <g stroke="#3F8467" stroke-width="1.5" opacity="0.75">
+      <path d="M756 362h104M756 382h104M784 344v58M812 344v58M840 344v58"/>
+    </g>
+  </g>
+  <rect x="802" y="398" width="8" height="40" rx="4" fill="#9DAFA5"/>
+
+  <!-- logger box -->
+  <rect x="912" y="352" width="52" height="64" rx="7" fill="#FFFFFF" stroke="#D4E1D9" stroke-width="2"/>
+  <circle cx="938" cy="372" r="6" fill="#2E7D5B"/>
+  <rect x="922" y="390" width="32" height="4" rx="2" fill="#DCE8E1"/>
+  <rect x="922" y="400" width="22" height="4" rx="2" fill="#DCE8E1"/>
+
+  <!-- foreground texture -->
+  <g stroke="#7FAB93" stroke-width="2" opacity="0.5" stroke-linecap="round">
+    <path d="M120 500c14-18 8-26 20-40"/>
+    <path d="M170 512c10-14 6-22 16-34"/>
+    <path d="M1040 486c12-16 6-24 18-36"/>
+    <path d="M1090 504c10-14 6-22 16-32"/>
+    <path d="M300 528c12-16 8-24 18-36"/>
+  </g>
+  <g fill="#7FAB93" opacity="0.35">
+    <ellipse cx="240" cy="470" rx="54" ry="18"/>
+    <ellipse cx="1010" cy="462" rx="64" ry="20"/>
+    <ellipse cx="600" cy="500" rx="70" ry="18"/>
+  </g>
+</svg>

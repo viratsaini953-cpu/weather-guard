@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Guard — Station Health</title>
+  <meta name="description" content="Automatic weather station data quality and fault detection, explained in plain words." />
+  <link rel="icon" href="assets/img/guide.svg" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M5 16a3.5 3.5 0 0 1 .4-6.97A5 5 0 0 1 15 8.5a3.2 3.2 0 0 1 .8 6.3"/>
+          <path d="M8 20h.01M12 20h.01M16 20h.01"/>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <b data-i18n="brand.name">Weather Guard</b>
+        <small data-i18n="brand.tag">Station health</small>
+      </span>
+    </div>
+
+    <div class="nav-label" data-i18n="menu">Menu</div>
+    <nav class="nav" id="tabs" role="tablist">
+      <button data-tab="overview" class="active" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+        <span data-i18n="nav.home">Dashboard</span>
+      </button>
+      <button data-tab="quality" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l2-6 4 12 2-6h6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav.quality">Sensor health</span>
+      </button>
+      <button data-tab="anomalies" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 9v5M12 17.5h.01" stroke-linecap="round"/><path d="M10.3 3.9L2.6 17.2A2 2 0 0 0 4.3 20.2h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke-linejoin="round"/></svg>
+        <span data-i18n="nav.problems">Problems</span>
+      </button>
+      <button data-tab="patterns" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="8" r="3"/><circle cx="17" cy="7" r="2.2"/><circle cx="16" cy="16" r="3.2"/><circle cx="7.5" cy="17" r="2.2"/></svg>
+        <span data-i18n="nav.patterns">Weather groups</span>
+      </button>
+      <button data-tab="rules" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h11M8 12h11M8 18h11" stroke-linecap="round"/><circle cx="4.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg>
+        <span data-i18n="nav.rules">Rules &amp; reasons</span>
+      </button>
+      <button data-tab="validation" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7l-9 9-3.5-3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 4.5A9 9 0 1 0 21 12" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.validation">Self-test</span>
+      </button>
+    </nav>
+
+    <div class="nav-label" data-i18n="general">General</div>
+    <nav class="nav">
+      <button data-tab="about" role="tab">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01" stroke-linecap="round"/></svg>
+        <span data-i18n="nav.about">Help</span>
+      </button>
+    </nav>
+
+    <div class="promo">
+      <img src="assets/img/guide.svg" alt="" class="promo-img" />
+      <b data-i18n="promo.title">New to weather data?</b>
+      <p data-i18n="promo.body">A short guide, in plain words.</p>
+      <button class="promo-btn" data-goto="about" data-i18n="promo.btn">Open help</button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+
+    <header class="topbar">
+      <label class="pick">
+        <span data-i18n="top.station">Station</span>
+        <select id="station"></select>
+      </label>
+      <label class="pick">
+        <span data-i18n="top.window">Window</span>
+        <select id="window">
+          <option value="6">6 h</option>
+          <option value="12" selected>12 h</option>
+          <option value="24">24 h</option>
+        </select>
+      </label>
+
+      <div class="topbar-spacer"></div>
+
+      <label class="pick lang">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/>
+        </svg>
+        <select id="language" aria-label="Language"></select>
+      </label>
+
+      <label class="switch" title="Fetch a fresh reading every 10 minutes">
+        <input type="checkbox" id="auto" />
+        <span data-i18n="top.auto">Auto 10 min</span>
+      </label>
+      <label class="switch" title="Inject deliberately broken values to demonstrate the detectors">
+        <input type="checkbox" id="demo" />
+        <span data-i18n="top.demo">Demo faults</span>
+      </label>
+      <button id="refresh" class="btn btn-primary" data-i18n="btn.refresh">Refresh data</button>
+    </header>
+
+    <div class="page-head">
+      <div>
+        <h1 id="page-title">Dashboard</h1>
+        <p id="page-sub">Everything about your weather station, in one place.</p>
+      </div>
+      <div class="page-actions">
+        <button id="export-json" class="btn ghost" data-i18n="btn.download">Download report</button>
+      </div>
+    </div>
+
+    <div id="statusbar" class="statusbar">
+      <span class="dot"></span>
+      <span id="status-text">Loading station data…</span>
+    </div>
+
+    <main>
+
+      <!-- ============ OVERVIEW ============ -->
+      <section id="tab-overview" class="tab-panel active">
+
+        <div class="card hero-card" id="hero"></div>
+
+        <div class="kpi-grid" id="kpis"></div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="card.stream.title">Readings over the week</h2>
+              <p class="hint" data-i18n="card.stream.hint">The shaded band is what we expect for that hour.</p>
+            </div>
+            <select id="overview-channel" class="mini-select"></select>
+          </div>
+          <div id="overview-chart" class="chart-host"></div>
+          <div class="legend">
+            <span><i class="lg-line"></i><span data-i18n="legend.observed">Actual reading</span></span>
+            <span><i class="lg-band"></i><span data-i18n="legend.expected">Normal range</span></span>
+            <span><i class="lg-dot"></i><span data-i18n="legend.flagged">Looks wrong</span></span>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 data-i18n="card.latest.title">Newest readings</h2>
+                <p class="hint" data-i18n="card.latest.hint">What each sensor said in the last hour.</p>
+              </div>
+            </div>
+            <div id="latest-table"></div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 data-i18n="card.findings.title">Worth a look</h2>
+                <p class="hint" data-i18n="card.findings.hint">The most unusual readings first.</p>
+              </div>
+            </div>
+            <div id="top-findings" class="finding-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ QUALITY ============ -->
+      <section id="tab-quality" class="tab-panel">
+        <div class="quality-top">
+          <div class="card score-card" id="dq-hero"></div>
+          <div class="card">
+            <h2 data-i18n="q.how.title">How the score is built</h2>
+            <p class="hint" id="dq-explain"></p>
+            <div id="dq-penalties"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="q.checks.title">The seven checks</h2>
+              <p class="hint" data-i18n="q.checks.hint">Each row is one simple rule and what it found.</p>
+            </div>
+          </div>
+          <div id="qc-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="q.sensors.title">Each sensor, one by one</h2>
+              <p class="hint" data-i18n="q.sensors.hint">A score of 100 means the sensor behaved perfectly.</p>
+            </div>
+          </div>
+          <div id="channel-scores" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="q.map.title">Availability map</h2>
+              <p class="hint" data-i18n="q.map.hint">Every hour for every sensor.</p>
+            </div>
+          </div>
+          <div id="heatmap" class="chart-host"></div>
+          <div class="legend">
+            <span><i class="sw sw-good"></i><span data-i18n="legend.good">Good</span></span>
+            <span><i class="sw sw-doubt"></i><span data-i18n="legend.doubt">Doubtful</span></span>
+            <span><i class="sw sw-bad"></i><span data-i18n="legend.bad">Problem</span></span>
+            <span><i class="sw sw-none"></i><span data-i18n="legend.none">No data</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PROBLEMS ============ -->
+      <section id="tab-anomalies" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="a.title">Problems found</h2>
+              <p class="hint" data-i18n="a.sub">Click any row to read why it was flagged.</p>
+            </div>
+            <div class="filters">
+              <select id="filter-channel" class="mini-select"></select>
+              <select id="filter-severity" class="mini-select">
+                <option value="">All levels</option>
+                <option value="critical">critical</option>
+                <option value="high">high</option>
+                <option value="medium">medium</option>
+                <option value="low">low</option>
+              </select>
+              <button id="export-csv" class="btn ghost">CSV</button>
+            </div>
+          </div>
+          <div id="anomaly-chart" class="chart-host"></div>
+          <div id="anomaly-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="a.joint.title">Hours that looked odd as a whole</h2>
+              <p class="hint" data-i18n="a.joint.hint">Several sensors moved together in an unusual way.</p>
+            </div>
+          </div>
+          <div id="multivariate-list" class="chip-list"></div>
+        </div>
+      </section>
+
+      <!-- ============ PATTERNS ============ -->
+      <section id="tab-patterns" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="p.cardTitle">Groups this week</h2>
+              <p class="hint" data-i18n="page.patterns.sub">Similar hours are grouped together.</p>
+            </div>
+            <div class="filters">
+              <select id="cluster-k" class="mini-select">
+                <option value="0" data-i18n="p.auto">Auto</option>
+                <option value="2">k = 2</option>
+                <option value="3">k = 3</option>
+                <option value="4">k = 4</option>
+                <option value="5">k = 5</option>
+              </select>
+            </div>
+          </div>
+          <div id="cluster-plot" class="chart-host"></div>
+          <div id="cluster-legend" class="cluster-legend"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="p.profiles.title">What each group is like</h2>
+              <p class="hint" data-i18n="p.profiles.hint">The strongest differences from an average hour.</p>
+            </div>
+          </div>
+          <div id="cluster-profiles" class="profile-grid"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="p.sil.title">Choosing the number of groups</h2>
+              <p class="hint" data-i18n="p.sil.hint">Higher is better separated.</p>
+            </div>
+          </div>
+          <div id="silhouette"></div>
+        </div>
+      </section>
+
+      <!-- ============ RULES ============ -->
+      <section id="tab-rules" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="r.title">Rules that fired</h2>
+              <p class="hint" data-i18n="page.rules.sub">A model says "unusual". A rule says "that is impossible".</p>
+            </div>
+          </div>
+          <div id="rules-list"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 data-i18n="r.imp.title">What usually triggers a flag</h2>
+                <p class="hint" data-i18n="r.imp.hint">Share of evidence across all flagged readings.</p>
+              </div>
+            </div>
+            <div id="importance"></div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2 data-i18n="r.det.title">Which checks agreed</h2>
+                <p class="hint" data-i18n="r.det.hint">A flag raised by several checks is the one to trust.</p>
+              </div>
+            </div>
+            <div id="detector-stats"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ VALIDATION ============ -->
+      <section id="tab-validation" class="tab-panel">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="v.cardTitle">Test the detectors</h2>
+              <p class="hint" data-i18n="page.validation.sub">We add known faults and check whether the system finds them.</p>
+            </div>
+            <button id="run-validation" class="btn btn-primary" data-i18n="v.run">Run the test</button>
+          </div>
+          <div id="validation-body">
+            <div class="placeholder" data-i18n="v.placeholder">Press "Run the test" to score the detectors.</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 data-i18n="v.typesTitle">Fault types used in the test</h2>
+              <p class="hint" data-i18n="v.typesHint">Each one mimics a real failure mode.</p>
+            </div>
+          </div>
+          <div id="fault-types" class="table-wrap"></div>
+        </div>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section id="tab-about" class="tab-panel">
+        <div class="card about-hero">
+          <img src="assets/img/station-hero.svg" alt="" class="about-img" />
+        </div>
+
+        <div class="card prose">
+          <h2 data-i18n="about.what">What this page does</h2>
+          <p data-i18n="about.whatBody">Your weather station sends one reading every hour.</p>
+
+          <h3 data-i18n="about.steps">How it works, step by step</h3>
+          <ol class="steps">
+            <li data-i18n="about.s1">Collect the hourly readings.</li>
+            <li data-i18n="about.s2">Work out what was normal for that hour.</li>
+            <li data-i18n="about.s3">Compare the reading with that range.</li>
+            <li data-i18n="about.s4">Check the simple physical rules.</li>
+            <li data-i18n="about.s5">Group similar hours.</li>
+            <li data-i18n="about.s6">Explain every flag in words.</li>
+          </ol>
+
+          <h3 data-i18n="about.assume">Good to know</h3>
+          <ul>
+            <li data-i18n="about.a1">One reading per hour.</li>
+            <li data-i18n="about.a2">The record is one week long.</li>
+            <li data-i18n="about.a3">A single unusual value is only a hint.</li>
+            <li data-i18n="about.a4">Rule descriptions stay in English.</li>
+            <li data-i18n="about.a5">No hardware and no login.</li>
+          </ul>
+
+          <h3 data-i18n="about.langNote">Language</h3>
+          <p data-i18n="about.langBody">The interface is translated.</p>
+
+          <h3 data-i18n="about.source">Data source</h3>
+          <p id="about-source"></p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <span id="footer-meta"></span>
+      <span data-i18n="footer.built">Plain HTML, CSS and JavaScript.</span>
+    </footer>
+  </div>
+</div>
+
+<script src="src/util.js"></script>
+<script src="src/config.js"></script>
+<script src="src/i18n.js"></script>
+<script src="src/sample-data.js"></script>
+<script src="src/data.js"></script>
+<script src="src/features.js"></script>
+<script src="src/quality.js"></script>
+<script src="src/anomaly.js"></script>
+<script src="src/cluster.js"></script>
+<script src="src/rules.js"></script>
+<script src="src/explain.js"></script>
+<script src="src/pipeline.js"></script>
+<script src="src/faults.js"></script>
+<script src="src/charts.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>
+
+
