@@ -199,7 +199,62 @@
     });
   }
 
+  /* ---------- DBSCAN (density-based baseline) ---------- */
+  function dist(a, b) {
+    let s = 0;
+    for (let i = 0; i < a.length; i++) { const d = a[i] - b[i]; s += d * d; }
+    return Math.sqrt(s);
+  }
+
+  /* eps from the k-distance curve: 85th percentile of the minPts-th
+     nearest-neighbour distance. Deterministic, no manual tuning. */
+  function autoEps(X, minPts) {
+    const d = [];
+    for (let i = 0; i < X.length; i++) {
+      const ds = [];
+      for (let j = 0; j < X.length; j++) if (i !== j) ds.push(dist(X[i], X[j]));
+      ds.sort(function (a, b) { return a - b; });
+      d.push(ds[Math.min(minPts - 1, ds.length - 1)]);
+    }
+    d.sort(function (a, b) { return a - b; });
+    return U.quantile(d, 0.85);
+  }
+
+  function dbscan(X, eps, minPts) {
+    const n = X.length;
+    const label = new Array(n).fill(-2);          // -2 unseen, -1 noise
+    const region = function (i) {
+      const out = [];
+      for (let j = 0; j < n; j++) if (dist(X[i], X[j]) <= eps) out.push(j);
+      return out;
+    };
+    let c = 0;
+    for (let i = 0; i < n; i++) {
+      if (label[i] !== -2) continue;
+      const nb = region(i);
+      if (nb.length < minPts) { label[i] = -1; continue; }
+      c++;
+      label[i] = c;
+      const seeds = nb.filter(function (j) { return j !== i; });
+      for (let k = 0; k < seeds.length; k++) {
+        const j = seeds[k];
+        if (label[j] === -1) label[j] = c;
+        if (label[j] !== -2) continue;
+        label[j] = c;
+        const nb2 = region(j);
+        if (nb2.length >= minPts) {
+          nb2.forEach(function (m) { if (seeds.indexOf(m) < 0) seeds.push(m); });
+        }
+      }
+    }
+    const noise = [];
+    label.forEach(function (l, i) { if (l === -1) noise.push(i); });
+    return { labels: label, k: c, noise: noise };
+  }
+
   AWS.cluster = {
+    dbscan: dbscan,
+    autoEps: autoEps,
     kmeans: kmeans,
     silhouette: silhouette,
     autoK: autoK,
@@ -207,3 +262,4 @@
     describe: describe
   };
 })(typeof window !== 'undefined' ? window : globalThis);
+

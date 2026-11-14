@@ -191,6 +191,9 @@
     /* Alarms that already exist in the untouched week are not new alarms, so
        the clean run is scored once and subtracted from every trial. */
     const baseResult = AWS.pipeline.run(series, baseOpts);
+    const setOf = function (arr) { const m = {}; (arr || []).forEach(function (i) { m[i] = true; }); return m; };
+    const baseIF = baseResult.iforest.indices;
+    const baseDB = baseResult.dbscan.noise;
     const baseline = {};
     channels.forEach(function (c) {
       const m = predictedFor(baseResult, c.key, series.times.length);
@@ -209,6 +212,10 @@
         const pred = predictedFor(res, ch.key, s.times.length);
         const sc = score(inj.truth, pred, baseline[ch.key], t.mode, inj.onset, inj.end);
         sc.type = t.id; sc.channel = ch.key; sc.n = inj.truth.length;
+        sc.m = {
+          iforest: score(inj.truth, setOf(res.iforest.indices), baseIF, t.mode, inj.onset, inj.end),
+          dbscan: score(inj.truth, setOf(res.dbscan.noise), baseDB, t.mode, inj.onset, inj.end)
+        };
         results.push(sc);
         (perType[t.id] = perType[t.id] || []).push(sc);
       });
@@ -220,6 +227,10 @@
       const pred = predictedFor(res, cs.channel, cs.series.times.length);
       const sc = score(cs.truth, pred, baseline[cs.channel], 'episode', cs.onset, cs.end);
       sc.type = 'crosssensor'; sc.channel = cs.channel; sc.n = cs.truth.length;
+      sc.m = {
+        iforest: score(cs.truth, setOf(res.iforest.indices), baseIF, 'episode', cs.onset, cs.end),
+        dbscan: score(cs.truth, setOf(res.dbscan.noise), baseDB, 'episode', cs.onset, cs.end)
+      };
       results.push(sc);
       (perType.crosssensor = perType.crosssensor || []).push(sc);
     }
@@ -247,7 +258,20 @@
     const precision = tp + fp ? tp / (tp + fp) : 0;
     const recall = tp + fn ? tp / (tp + fn) : 0;
 
+    const agg = function (get) {
+      let tp = 0, fp = 0, fn = 0;
+      results.forEach(function (r) { const x = get(r); if (x) { tp += x.tp; fp += x.fp; fn += x.fn; } });
+      const p = tp + fp ? tp / (tp + fp) : 0;
+      const rc = tp + fn ? tp / (tp + fn) : 0;
+      return { tp: tp, fp: fp, fn: fn, precision: p, recall: rc, f1: (p + rc) ? 2 * p * rc / (p + rc) : 0 };
+    };
+
     return {
+      methods: {
+        ensemble: agg(function (r) { return r; }),
+        iforest: agg(function (r) { return r.m && r.m.iforest; }),
+        dbscan: agg(function (r) { return r.m && r.m.dbscan; })
+      },
       byType: byType,
       trials: results,
       totals: {
@@ -306,6 +330,8 @@
 
   AWS.faults = { TYPES: TYPES, run: run, cloneSeries: cloneSeries, demo: demo };
 })(typeof window !== 'undefined' ? window : globalThis);
+
+
 
 
 

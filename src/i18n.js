@@ -1231,6 +1231,20 @@
   Object.keys(EXTRA).forEach(function (code) {
     if (DICT[code]) Object.assign(DICT[code], EXTRA[code]);
   });
+
+  /* algorithm-comparison labels */
+  const EXTRA2 = {
+    en: { 'v.methods': 'Algorithm comparison', 'v.mixture': 'Ensemble (this system)' },
+    hi: { 'v.methods': 'एल्गोरिदम की तुलना', 'v.mixture': 'संयुक्त (यह प्रणाली)' },
+    mr: { 'v.methods': 'अल्गोरिदम तुलना', 'v.mixture': 'एकत्रित (ही प्रणाली)' },
+    es: { 'v.methods': 'Comparación de algoritmos', 'v.mixture': 'Conjunto (este sistema)' },
+    ar: { 'v.methods': 'مقارنة الخوارزميات', 'v.mixture': 'المزيج (هذا النظام)' },
+    zh: { 'v.methods': '算法对比', 'v.mixture': '集成方法（本系统）' }
+  };
+  Object.keys(EXTRA2).forEach(function (code) {
+    if (DICT[code]) Object.assign(DICT[code], EXTRA2[code]);
+  });
+
   /* ------------------------------------------------------------
      public API
      ------------------------------------------------------------ */
@@ -1277,6 +1291,7 @@
   function setLang(code, silent) {
     current = DICT[code] ? code : 'en';
     try { localStorage.setItem('awsdq.lang', current); } catch (e) { /* private mode */ }
+    if (typeof document === 'undefined') { current = code; return; }
     const html = document.documentElement;
     html.setAttribute('lang', current === 'zh' ? 'zh-CN' : current);
     html.setAttribute('dir', isRTL() ? 'rtl' : 'ltr');
@@ -1308,6 +1323,8 @@
     get lang() { return current; }
   };
 })(typeof window !== 'undefined' ? window : globalThis);
+
+
 
 
 

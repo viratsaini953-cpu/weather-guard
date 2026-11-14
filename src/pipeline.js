@@ -62,6 +62,11 @@
     const mvIndices = [];
     iforest.flags.forEach(function (f, i) { if (f) mvIndices.push(i); });
 
+    /* density baseline for the model comparison (DBSCAN) */
+    const dbMin = Math.max(4, Math.round(matrix.X.length / 40));
+    const dbEps = AWS.cluster.autoEps(matrix.X, dbMin);
+    const dbs = AWS.cluster.dbscan(matrix.X, dbEps, dbMin);
+
     /* 5. clustering ------------------------------------------------------ */
     const X = matrix.X;
     let clusterModel, kmeta;
@@ -164,6 +169,10 @@
         count: mvIndices.length,
         indices: mvIndices
       },
+      dbscan: {
+        labels: dbs.labels, k: dbs.k, noise: dbs.noise,
+        eps: U.round(dbEps, 3), minPts: dbMin, count: dbs.noise.length
+      },
       flagsByKey: flagsByKey,
       clusters: clusters,
       rules: rules,
@@ -192,6 +201,7 @@
 
   AWS.pipeline = { run: run, severityFromScore: severityFromScore, assessFinding: assessFinding };
 })(typeof window !== 'undefined' ? window : globalThis);
+
 
 
 

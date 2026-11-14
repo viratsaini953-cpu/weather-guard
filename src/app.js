@@ -658,11 +658,27 @@
         '<td>' + verdictPill + '</td></tr>';
     }).join('');
 
+    const M = rep.methods || {};
+    const mrow = function (name, m, best) {
+      if (!m) return '';
+      return '<tr' + (best ? ' style="background:#F1F8F4"' : '') + '><td><b>' + esc(name) + '</b></td>' +
+        '<td class="num mono">' + pctText(m.precision) + '</td>' +
+        '<td class="num mono">' + pctText(m.recall) + '</td>' +
+        '<td class="num mono">' + U.fmtNum(m.f1, 2) + '</td></tr>';
+    };
+    const mrows =
+      mrow(T('v.mixture'), M.ensemble, true) +
+      mrow('Isolation Forest', M.iforest, false) +
+      mrow('DBSCAN', M.dbscan, false);
+
     $('#validation-body').innerHTML = verdict + metrics +
       '<div class="table-wrap"><table><thead><tr><th>' + esc(T('v.th.fault')) + '</th><th>' + esc(T('v.th.detector')) + '</th>' +
       '<th class="num">' + esc(T('v.th.found')) + '</th><th class="num">Recall</th><th class="num">Precision</th><th class="num">F1</th>' +
       '<th class="num">Latency</th><th>' + esc(T('v.th.verdict')) + '</th></tr></thead><tbody>' +
       rows + '</tbody></table></div>' +
+      '<h3 style="margin:18px 0 8px;font-size:14px">' + esc(T('v.methods')) + '</h3>' +
+      '<div class="table-wrap"><table><thead><tr><th>Algorithm</th><th class="num">Precision</th>' +
+      '<th class="num">Recall</th><th class="num">F1</th></tr></thead><tbody>' + mrows + '</tbody></table></div>' +
       '<div class="hint" style="margin-top:14px">' + esc(T('v.method')) + ' ' + esc(T('v.method2')) + '</div>';
   }
 
@@ -908,6 +924,7 @@
     init();
   }
 })(typeof window !== 'undefined' ? window : globalThis);
+
 
 
 
